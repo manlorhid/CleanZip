@@ -1,5 +1,6 @@
 package com.cleanzip.app.ui.screens
 
+import android.app.Activity
 import android.text.format.Formatter
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -30,6 +32,7 @@ import androidx.compose.material.icons.outlined.Folder
 import androidx.compose.material.icons.outlined.FolderOpen
 import androidx.compose.material.icons.outlined.FolderZip
 import androidx.compose.material.icons.outlined.LightMode
+import androidx.compose.material.icons.outlined.PrivacyTip
 import androidx.compose.material.icons.outlined.Unarchive
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -67,6 +70,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.cleanzip.app.MainViewModel
 import com.cleanzip.app.Status
+import com.cleanzip.app.ads.AdBanner
+import com.cleanzip.app.ads.AdsManager
 import com.cleanzip.app.data.ThemeMode
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -92,9 +97,20 @@ fun MainScreen(viewModel: MainViewModel, onShowTutorial: () -> Unit) {
                     IconButton(onClick = onShowTutorial, enabled = !busy) {
                         Icon(Icons.AutoMirrored.Outlined.HelpOutline, contentDescription = "Ver tutorial")
                     }
+                    if (AdsManager.privacyOptionsRequired) {
+                        val activity = LocalContext.current as? Activity
+                        IconButton(onClick = { activity?.let(AdsManager::showPrivacyOptions) }) {
+                            Icon(Icons.Outlined.PrivacyTip, contentDescription = "Privacidad de los anuncios")
+                        }
+                    }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background)
             )
+        },
+        bottomBar = {
+            if (AdsManager.adsReady) {
+                AdBanner(Modifier.navigationBarsPadding())
+            }
         }
     ) { padding ->
         LazyColumn(

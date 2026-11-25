@@ -1,0 +1,5 @@
+# Plantilla de app-ads.txt para CleanZip
+# 1. Sustituye pub-XXXXXXXXXXXXXXXX por tu ID de editor de AdMob (Ajustes → Información de la cuenta).
+# 2. Sube este archivo a la raíz de tu web: https://tudominio.com/app-ads.txt
+# 3. Pon esa web como "Sitio web del desarrollador" en la ficha de Google Play.
+google.com, pub-XXXXXXXXXXXXXXXX, DIRECT, f08c47fec0942fa0

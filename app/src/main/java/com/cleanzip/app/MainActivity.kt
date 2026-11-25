@@ -15,6 +15,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import com.cleanzip.app.ads.AdsManager
 import com.cleanzip.app.data.ThemeMode
 import com.cleanzip.app.ui.screens.MainScreen
 import com.cleanzip.app.ui.screens.OnboardingScreen
@@ -27,6 +28,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (savedInstanceState == null) handleIntent(intent)
+        AdsManager.start(this)
 
         setContent {
             val prefs = viewModel.prefs
