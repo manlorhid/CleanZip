@@ -25,7 +25,7 @@ class Prefs(context: Context) {
         get() = sp.getString(KEY_DEST, null)?.let(Uri::parse)
         set(value) = sp.edit().putString(KEY_DEST, value?.toString()).apply()
 
-    fun setOnboardingDone(done: Boolean) {
+    fun markOnboardingDone(done: Boolean) {
         onboardingDone = done
         sp.edit().putBoolean(KEY_ONBOARDING, done).apply()
     }

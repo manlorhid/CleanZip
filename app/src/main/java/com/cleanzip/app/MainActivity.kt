@@ -50,7 +50,7 @@ class MainActivity : ComponentActivity() {
                 Crossfade(targetState = !prefs.onboardingDone || showTutorial, label = "onboarding") { onboarding ->
                     if (onboarding) {
                         OnboardingScreen(onFinish = {
-                            prefs.setOnboardingDone(true)
+                            prefs.markOnboardingDone(true)
                             showTutorial = false
                         })
                     } else {
