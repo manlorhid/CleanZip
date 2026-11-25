@@ -1,0 +1,5 @@
+<resources>
+    <color name="ic_background">#1E6B52</color>
+    <color name="splash_light">#F6FBF7</color>
+    <color name="splash_dark">#0F1512</color>
+</resources>

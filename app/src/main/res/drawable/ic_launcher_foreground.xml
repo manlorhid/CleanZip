@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Carpeta -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M34,38h14l4,4h22a4,4 0,0 1,4 4v24a4,4 0,0 1,-4 4H34a4,4 0,0 1,-4 -4V42a4,4 0,0 1,4 -4z" />
+    <!-- Cremallera -->
+    <path
+        android:fillColor="#1E6B52"
+        android:pathData="M56,46h4v4h-4zM60,50h4v4h-4zM56,54h4v4h-4zM60,58h4v4h-4zM56,62h8v8h-8z" />
+</vector>
