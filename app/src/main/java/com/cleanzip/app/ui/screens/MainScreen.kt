@@ -32,6 +32,7 @@ import androidx.compose.material.icons.outlined.Folder
 import androidx.compose.material.icons.outlined.FolderOpen
 import androidx.compose.material.icons.outlined.FolderZip
 import androidx.compose.material.icons.outlined.LightMode
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.PrivacyTip
 import androidx.compose.material.icons.outlined.Unarchive
 import androidx.compose.material3.Button
@@ -50,12 +51,15 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -72,6 +76,7 @@ import com.cleanzip.app.MainViewModel
 import com.cleanzip.app.Status
 import com.cleanzip.app.ads.AdBanner
 import com.cleanzip.app.ads.AdsManager
+import com.cleanzip.app.billing.BillingManager
 import com.cleanzip.app.data.ThemeMode
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -88,7 +93,20 @@ fun MainScreen(viewModel: MainViewModel, onShowTutorial: () -> Unit) {
         uri?.let(viewModel::onDestinationSelected)
     }
 
+    var showSupport by remember { mutableStateOf(false) }
+    if (showSupport) SupportDialog(onDismiss = { showSupport = false })
+
+    val snackbar = remember { SnackbarHostState() }
+    val billingMessage = BillingManager.message
+    LaunchedEffect(billingMessage) {
+        if (billingMessage != null) {
+            snackbar.showSnackbar(billingMessage)
+            BillingManager.message = null
+        }
+    }
+
     Scaffold(
+        snackbarHost = { SnackbarHost(snackbar) },
         topBar = {
             TopAppBar(
                 title = { Text("CleanZip", fontWeight = FontWeight.SemiBold) },
@@ -96,6 +114,9 @@ fun MainScreen(viewModel: MainViewModel, onShowTutorial: () -> Unit) {
                     ThemeMenu(viewModel.prefs.themeMode, viewModel.prefs::updateThemeMode)
                     IconButton(onClick = onShowTutorial, enabled = !busy) {
                         Icon(Icons.AutoMirrored.Outlined.HelpOutline, contentDescription = "Ver tutorial")
+                    }
+                    IconButton(onClick = { showSupport = true }) {
+                        Icon(Icons.Outlined.FavoriteBorder, contentDescription = "Apoyar CleanZip")
                     }
                     if (AdsManager.privacyOptionsRequired) {
                         val activity = LocalContext.current as? Activity
@@ -108,7 +129,7 @@ fun MainScreen(viewModel: MainViewModel, onShowTutorial: () -> Unit) {
             )
         },
         bottomBar = {
-            if (AdsManager.adsReady) {
+            if (AdsManager.adsReady && !BillingManager.adsRemoved) {
                 AdBanner(Modifier.navigationBarsPadding())
             }
         }

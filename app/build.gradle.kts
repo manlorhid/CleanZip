@@ -79,6 +79,9 @@ dependencies {
     implementation("com.google.android.gms:play-services-ads:23.6.0")
     implementation("com.google.android.ump:user-messaging-platform:3.1.0")
 
+    // Compras dentro de la app (quitar anuncios y donaciones)
+    implementation("com.android.billingclient:billing-ktx:7.1.1")
+
     // Formatos de compresión
     implementation("org.apache.commons:commons-compress:1.27.1") // ZIP, 7z, TAR, GZ, BZ2, XZ
     implementation("org.tukaani:xz:1.10")                        // LZMA/XZ (necesario para 7z y .xz)
