@@ -3,10 +3,15 @@ name: Compilar APK
 on:
   push:
     branches: [main]
+    paths-ignore: ['**.md']
   workflow_dispatch:
 
 permissions:
   contents: write
+
+concurrency:
+  group: build
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -17,23 +22,10 @@ jobs:
         with:
           distribution: temurin
           java-version: 17
-      - uses: android-actions/setup-android@v3
       - uses: gradle/actions/setup-gradle@v4
-      - name: Compilar
-        run: |
-          chmod +x gradlew
-          ./gradlew assembleRelease
-          cp app/build/outputs/apk/release/app-release.apk CleanZip.apk
-      - uses: actions/upload-artifact@v4
-        with:
-          name: CleanZip-apk
-          path: CleanZip.apk
-      - name: Publicar en Releases
-        uses: softprops/action-gh-release@v2
+      - run: ./gradlew assembleRelease --no-configuration-cache
+      - uses: softprops/action-gh-release@v2
         with:
           tag_name: latest
-          name: CleanZip (última versión)
-          body: APK compilado automáticamente desde la rama main.
-          prerelease: false
-          make_latest: true
-          files: CleanZip.apk
+          name: CleanZip
+          files: app/build/outputs/apk/release/CleanZip.apk
