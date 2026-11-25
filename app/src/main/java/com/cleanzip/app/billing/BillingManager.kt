@@ -111,7 +111,7 @@ object BillingManager {
             val owned = purchases.any {
                 REMOVE_ADS in it.products && it.purchaseState == Purchase.PurchaseState.PURCHASED
             }
-            setAdsRemoved(owned)
+            saveAdsRemoved(owned)
             purchases.forEach { handlePurchase(it, silent = true) }
         }
     }
@@ -136,7 +136,7 @@ object BillingManager {
         val c = client ?: return
 
         if (REMOVE_ADS in purchase.products) {
-            setAdsRemoved(true)
+            saveAdsRemoved(true)
             if (!purchase.isAcknowledged) {
                 c.acknowledgePurchase(
                     AcknowledgePurchaseParams.newBuilder().setPurchaseToken(purchase.purchaseToken).build()
@@ -151,7 +151,7 @@ object BillingManager {
         }
     }
 
-    private fun setAdsRemoved(value: Boolean) {
+    private fun saveAdsRemoved(value: Boolean) {
         adsRemoved = value
         appContext.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit()
             .putBoolean(KEY_ADS_REMOVED, value).apply()
